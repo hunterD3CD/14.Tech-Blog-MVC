@@ -1,6 +1,9 @@
-const router = require("express").Router;
+// The function is used to create a new router object with a middle path
+const router = require("express").Router();
+// import "user-routes.js" 
 const userRoutes = require("./user-routes");
 
-router.userRoutes("/users", userRoutes);
+// Mount the "userRoutes" object as middleware - a new router object at middle path "/users"
+router.use("/users", userRoutes);
 
 module.exports = router;
