@@ -24,7 +24,17 @@ User.init(
       autoIncrement: true,
     },
     username: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [4],
@@ -42,16 +52,19 @@ User.init(
 
       // set up beforeUpdate lifecycle "hook" functionality
       async beforeUpdate(updatedUserData) {
-        updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+        updatedUserData.password = await bcrypt.hash(
+          updatedUserData.password,
+          10
+        );
         return updatedUserData;
-      }
+      },
     },
-// define configuration
+    // define configuration
     sequelize,
     timestamps: false,
     freezeTableName: true,
     underscored: true,
-    modelName: "user"
+    modelName: "user",
   }
 );
 
