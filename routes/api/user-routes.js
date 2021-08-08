@@ -1,6 +1,6 @@
 // implement the CRUD action
 const router = require("express").Router();
-const { User } = require("../../models");
+const { User, Post } = require("../../models");
 
 // ////////////////////////////////GET /api/users -------------------------------------------------------find all users
 router.get("/", (req, res) => {
@@ -21,6 +21,16 @@ router.get("/:id", (req, res) => {
     where: {
       id: req.param.id,
     },
+    include: [
+      {
+        model: Post,
+        attributes: ["id", "title", "content", "created_at"],
+      },
+      {
+        model: Post,
+        attributes: ["title"],
+      },
+    ],
   })
     .then((dbUserData) => {
       if (!dbUserData) {
