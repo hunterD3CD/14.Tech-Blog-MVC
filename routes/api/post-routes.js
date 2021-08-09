@@ -1,6 +1,6 @@
 // implement the CRUD action
 const router = require("express").Router();
-const { Post, User } = require("../../models");
+const { Post, User, Comment } = require("../../models");
 // redirect user to other path
 const withAuth = require("../../utils/auth");
 
@@ -13,6 +13,14 @@ router.get("/", (req, res) => {
       {
         model: User,
         attributes: ["username"],
+      },
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
+          model: User,
+          attributes: ["username"],
+        },
       },
     ],
   })
@@ -34,6 +42,14 @@ router.get("/:id", (req, res) => {
       {
         model: User,
         attributes: ["username"],
+      },
+      {
+        model: Comment,
+        attributes: ["id", "comment_text", "post_id", "user_id", "created_at"],
+        include: {
+          model: User,
+          attributes: ["username"],
+        },
       },
     ],
   })
@@ -64,7 +80,7 @@ router.post("/", withAuth, (req, res) => {
     });
 });
 
-// ////////////////////////////////PUT /api/posts/1 ------------------------------------------------------update an existing comment
+// ////////////////////////////////PUT /api/posts/1 ------------------------------------------------------update an existing post
 router.put("/:id", withAuth, (req, res) => {
   Post.update(
     {
