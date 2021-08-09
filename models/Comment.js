@@ -2,31 +2,37 @@
 const { Model, DataTypes } = require("sequelize");
 const sequelize = require("../config/connection");
 
-// so Post class can inherits all functions from Model class
-class Post extends Model {}
+// so Comment class can inherits all functions from Model class
+class Comment extends Model {}
 
-// create table column & configuration for Post Model
-Post.init(
+// create table column & configuration for Comment Model
+Comment.init(
   {
     // define the table column
     id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    comment_text: {
       type: DataTypes.STRING,
-      allowNull: false,
-    },
-    content: {
-      type: DataTypes.TEXT,
-      allowNull: false,
+      validate: {
+        len: [3],
+      },
     },
     user_id: {
       type: DataTypes.INTEGER,
+      allowNull: false,
       references: {
         model: "user",
+        key: "id",
+      },
+    },
+    post_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "post",
         key: "id",
       },
     },
@@ -36,8 +42,8 @@ Post.init(
     sequelize,
     freezeTableName: true,
     underscored: true,
-    modelName: "post",
+    modelName: "comment",
   }
 );
 
-module.exports = Post;
+module.exports = Comment;
